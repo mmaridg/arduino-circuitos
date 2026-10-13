@@ -99,53 +99,57 @@ void loop() {
       display.display(); //[cite: 1]
       
       // Quando 4 dígitos forem inseridos, faz a verificação
-      if (senhaDigitada.length() == 4) {
-        display.clear(); 
-        display.setCursor(0, 10); 
-        display.println("Senha: ");
-        display.setCursor(0, 30);
-        display.println(senhaDigitada.c_str()); 
-        display.display();
-        
-        if (senhaDigitada == "0401") {
-          display.println("Bem-vinda, Mari!");
-        } 
-        else if (senhaDigitada == "1909") {
-          display.println("Bem-vinda, Lud!");
-        } 
-        else if (senhaDigitada == "2711") {
-          display.println("Bem-vinda, Evi!");
-        } 
-        else if (senhaDigitada == "3011") {
-          display.println("Bem-vindo, Ti!");
-        } 
-        else if (senhaDigitada == "1234") {
-          float t = dht.readTemperature(); //[cite: 7]
-          display.setCursor(0, 20); //[cite: 1]
-          display.println("Temperatura");
-          display.setCursor(0, 40);
-          display.print("identificada: ");
-          display.print(t); //[cite: 7]
-          display.print(" graus");
-        } 
-        else {
-          display.println("Senha Incorreta!");
+
+        if (senhaDigitada.length() == 4) {
+          // Pausa de meio segundo para o usuário ver o 4º dígito antes da tela mudar
+          delay(500); 
+          
+          display.clear(); // Limpa o "Senha: 1234" da tela
+          
+          if (senhaDigitada == "0401") {
+            display.setCursor(0, 30); //[cite: 1]
+            display.println("Bem-vinda, Mari!");
+          } 
+          else if (senhaDigitada == "1909") {
+            display.setCursor(0, 30); //[cite: 1]
+            display.println("Bem-vinda, Lud!");
+          } 
+          else if (senhaDigitada == "2711") {
+            display.setCursor(0, 30); //[cite: 1]
+            display.println("Bem-vinda, Evi!");
+          } 
+          else if (senhaDigitada == "3011") {
+            display.setCursor(0, 30); //[cite: 1]
+            display.println("Bem-vindo, Ti!");
+          } 
+          else if (senhaDigitada == "1234") {
+            float t = dht.readTemperature(); //[cite: 7]
+            display.setCursor(0, 15); //[cite: 1]
+            display.println("Temperatura");
+            display.setCursor(0, 35); //[cite: 1]
+            display.print("identificada: ");
+            display.print(t, 1); // O ", 1" formata para ter apenas 1 casa decimal
+            display.print("C");
+          } 
+          else {
+            display.setCursor(0, 30); //[cite: 1]
+            display.println("Senha Incorreta!");
+          }
+          
+          display.display(); //[cite: 1]
+          
+          // Mantém a mensagem de boas-vindas/temperatura na tela por 3 segundos
+          delay(3000); 
+          display.clear(); //[cite: 1]
+          display.display(); //[cite: 1]
+          
+          // Reseta as variáveis
+          aguardandoSenha = false;
+          senhaDigitada = "";
+          
+          // Pausa para afastar a mão/rosto antes de ler a distância novamente
+          delay(3000);
         }
-        
-        display.display(); //[cite: 1]
-        
-        // Mantém a mensagem na tela por 3 segundos antes de resetar o sistema
-        delay(3000); 
-        display.clear(); //[cite: 1]
-        display.display(); //[cite: 1]
-        
-        // Reseta as variáveis para nova detecção
-        aguardandoSenha = false;
-        senhaDigitada = "";
-        
-        // Pequena pausa para evitar leitura imediata fantasma do PIR
-        delay(1000);
-      }
     }
   }
 }
